@@ -1,6 +1,8 @@
 package com.example.crud_java.domain.item;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository {
+    void save(Item item);
+    Optional<Item> findById(Long itemNo);
 }
