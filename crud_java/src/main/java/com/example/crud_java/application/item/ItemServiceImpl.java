@@ -3,6 +3,7 @@ package com.example.crud_java.application.item;
 import com.example.crud_java.application.item.dto.ItemCreateRequest;
 import com.example.crud_java.application.item.dto.ItemReadResponse;
 import com.example.crud_java.application.item.exception.ItemNotFoundException;
+import com.example.crud_java.application.item.exception.ItemQuantityException;
 import com.example.crud_java.domain.item.Item;
 import com.example.crud_java.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
 
     private void validateItemQuantity(Long quantity) {
         if (quantity < 1) {
-            throw new IllegalArgumentException("상품 재고는 1개 이상이어야합니다.");
+            throw new ItemQuantityException("상품 재고는 1개 이상이어야합니다.");
         }
     }
 }
