@@ -1,9 +1,11 @@
 package com.example.crud_java.presentation.global;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExceptionResponse {
     private String message;
 
