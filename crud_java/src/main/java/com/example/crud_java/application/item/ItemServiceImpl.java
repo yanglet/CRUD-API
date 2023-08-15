@@ -1,12 +1,16 @@
 package com.example.crud_java.application.item;
 
+import com.example.crud_java.application.common.dto.PageDto;
 import com.example.crud_java.application.item.dto.ItemCreateRequest;
+import com.example.crud_java.application.item.dto.ItemReadRequest;
 import com.example.crud_java.application.item.dto.ItemReadResponse;
+import com.example.crud_java.application.item.dto.ItemUpdateRequest;
 import com.example.crud_java.application.item.exception.ItemNotFoundException;
 import com.example.crud_java.application.item.exception.ItemQuantityException;
 import com.example.crud_java.domain.item.Item;
 import com.example.crud_java.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+
+    @Transactional(readOnly = true)
+    @Override
+    public PageDto readItems(ItemReadRequest request) {
+        Page<Item> items = itemRepository.findAllCustom(
+                request.getPageable(),
+                request.getKeyword(),
+                request.getStartDate(),
+                request.getEndDate()
+        );
+
+        return new PageDto(items.getContent(), items.getTotalElements());
+    }
 
     @Transactional
     @Override
@@ -41,6 +58,26 @@ public class ItemServiceImpl implements ItemService {
                 item.getUpdateDate(),
                 item.getUpdateOperator()
         );
+    }
+
+    @Transactional
+    @Override
+    public void updateItem(Long itemNo, ItemUpdateRequest request) {
+        validateItemQuantity(request.getQuantity());
+
+        Item item = itemRepository.findById(itemNo)
+                .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
+
+        item.update(request.getName(), request.getType(), request.getQuantity());
+    }
+
+    @Transactional
+    @Override
+    public void deleteItem(Long itemNo) {
+        Item item = itemRepository.findById(itemNo)
+                .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
+
+        item.delete();
     }
 
     private void validateItemQuantity(Long quantity) {

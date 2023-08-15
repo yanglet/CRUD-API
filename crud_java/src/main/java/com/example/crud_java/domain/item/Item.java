@@ -38,8 +38,9 @@ public class Item extends BaseEntity {
         return item;
     }
 
-    public void updateName(String name) {
+    public void update(String name, String type, Long quantity) {
         this.name = name;
+        updateQuantity(type, quantity);
     }
 
     public void updateQuantity(String type, Long quantity) {
