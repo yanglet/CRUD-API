@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemUpdateRequest {
     private String name;
-    private String type;
     private Long quantity;
 }

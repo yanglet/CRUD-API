@@ -10,7 +10,7 @@ import org.hibernate.annotations.Where;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "ITEM")
 @Where(clause = "deleted = false")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -38,9 +38,9 @@ public class Item extends BaseEntity {
         return item;
     }
 
-    public void update(String name, String type, Long quantity) {
+    public void update(String name, Long quantity) {
         this.name = name;
-        updateQuantity(type, quantity);
+        this.quantity = quantity;
     }
 
     public void updateQuantity(String type, Long quantity) {

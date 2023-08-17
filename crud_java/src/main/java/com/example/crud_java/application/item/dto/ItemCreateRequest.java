@@ -15,4 +15,11 @@ import lombok.NoArgsConstructor;
 public class ItemCreateRequest {
     private String name;
     private Long quantity;
+
+    public static ItemCreateRequest of(String name, Long quantity) {
+        ItemCreateRequest itemCreateRequest = new ItemCreateRequest();
+        itemCreateRequest.name = name;
+        itemCreateRequest.quantity = quantity;
+        return itemCreateRequest;
+    }
 }

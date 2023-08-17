@@ -1,10 +1,8 @@
 package com.example.crud_java.application.item;
 
+import com.example.crud_java.application.common.DistributedLockService;
 import com.example.crud_java.application.common.dto.PageDto;
-import com.example.crud_java.application.item.dto.ItemCreateRequest;
-import com.example.crud_java.application.item.dto.ItemReadRequest;
-import com.example.crud_java.application.item.dto.ItemReadResponse;
-import com.example.crud_java.application.item.dto.ItemUpdateRequest;
+import com.example.crud_java.application.item.dto.*;
 import com.example.crud_java.application.item.exception.ItemNotFoundException;
 import com.example.crud_java.application.item.exception.ItemQuantityException;
 import com.example.crud_java.domain.item.Item;
@@ -18,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
+    private final DistributedLockService distributedLockService;
 
     @Transactional(readOnly = true)
     @Override
@@ -68,7 +67,17 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemNo)
                 .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
 
-        item.update(request.getName(), request.getType(), request.getQuantity());
+        item.update(request.getName(), request.getQuantity());
+    }
+
+    @Override
+    public void updateItemQuantity(Long itemNo, ItemQuantityUpdateRequest request) {
+        distributedLockService.doDistributedLock(() -> {
+            Item item = itemRepository.findById(itemNo)
+                    .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
+
+            item.updateQuantity(request.getType(), request.getQuantity());
+        }, "LOCK:updateItemQuantity:" + itemNo.toString());
     }
 
     @Transactional

@@ -2,10 +2,7 @@ package com.example.crud_java.presentation.item;
 
 import com.example.crud_java.application.common.dto.PageDto;
 import com.example.crud_java.application.item.ItemService;
-import com.example.crud_java.application.item.dto.ItemCreateRequest;
-import com.example.crud_java.application.item.dto.ItemReadRequest;
-import com.example.crud_java.application.item.dto.ItemReadResponse;
-import com.example.crud_java.application.item.dto.ItemUpdateRequest;
+import com.example.crud_java.application.item.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +40,15 @@ public class ItemController {
             @RequestBody ItemUpdateRequest request
     ) {
         itemService.updateItem(itemNo, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{itemNo}")
+    public ResponseEntity<Void> updateItemQuantity(
+            @PathVariable Long itemNo,
+            @RequestBody ItemQuantityUpdateRequest request
+    ) {
+        itemService.updateItemQuantity(itemNo, request);
         return ResponseEntity.noContent().build();
     }
 
