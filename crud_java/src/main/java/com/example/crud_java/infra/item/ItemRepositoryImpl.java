@@ -30,6 +30,8 @@ public class ItemRepositoryImpl implements ItemRepository {
                         betweenDate(startDate, endDate)
                 )
                 .orderBy(item.insertDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         List<Long> itemNos = queryFactory.select(item.itemNo)

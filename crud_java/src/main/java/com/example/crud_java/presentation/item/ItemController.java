@@ -4,6 +4,8 @@ import com.example.crud_java.application.common.dto.PageDto;
 import com.example.crud_java.application.item.ItemService;
 import com.example.crud_java.application.item.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,11 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping
-    public ResponseEntity<PageDto> readItems(ItemReadRequest request) {
-        PageDto response = itemService.readItems(request);
+    public ResponseEntity<PageDto> readItems(
+            @PageableDefault(size = 20) Pageable pageable,
+            ItemReadRequest request
+    ) {
+        PageDto response = itemService.readItems(pageable, request);
         return ResponseEntity.ok(response);
     }
 

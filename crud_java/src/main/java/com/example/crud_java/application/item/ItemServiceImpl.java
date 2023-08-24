@@ -9,6 +9,7 @@ import com.example.crud_java.domain.item.Item;
 import com.example.crud_java.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +21,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageDto readItems(ItemReadRequest request) {
+    public PageDto readItems(Pageable pageable, ItemReadRequest request) {
         Page<Item> items = itemRepository.findAllCustom(
-                request.getPageable(),
+                pageable,
                 request.getKeyword(),
                 request.getStartDate(),
                 request.getEndDate()
