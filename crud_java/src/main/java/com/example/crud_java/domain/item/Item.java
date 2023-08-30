@@ -9,6 +9,10 @@ import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
+/**
+ * 완벽하게 DDD 가져가려면 POJO 로 만들고
+ * Infra 에서 엔티티로 가져가야하는데 그건 좀 ,,,,, 불편하니까 이렇게..
+ */
 @Entity
 @Table(name = "ITEM")
 @Where(clause = "deleted = false")

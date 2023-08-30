@@ -26,7 +26,6 @@ public class DistributedLockService {
             if (available) {
                 strategy.doLock();
             }
-
         } catch (InterruptedException e) {
             log.error("InterruptedException 발생!", e);
             throw new RuntimeException("InterruptedException!");
