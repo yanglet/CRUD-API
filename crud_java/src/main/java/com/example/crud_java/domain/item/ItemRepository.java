@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface ItemRepository {
     Page<Item> findAllCustom(Pageable pageable, String keyword, LocalDateTime startDate, LocalDateTime endDate);
     void save(Item item);
+    void saveAndFlush(Item item);
     Optional<Item> findById(Long itemNo);
 }

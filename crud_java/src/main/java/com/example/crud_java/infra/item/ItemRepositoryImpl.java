@@ -51,6 +51,11 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
+    public void saveAndFlush(Item item) {
+        itemJpaRepository.saveAndFlush(item);
+    }
+
+    @Override
     public Optional<Item> findById(Long itemNo) {
         return itemJpaRepository.findById(itemNo);
     }

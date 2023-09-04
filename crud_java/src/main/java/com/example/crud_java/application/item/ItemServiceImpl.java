@@ -78,6 +78,8 @@ public class ItemServiceImpl implements ItemService {
                     .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
 
             item.updateQuantity(request.getType(), request.getQuantity());
+
+            itemRepository.saveAndFlush(item);
         }, "LOCK:updateItemQuantity:" + itemNo.toString());
     }
 
