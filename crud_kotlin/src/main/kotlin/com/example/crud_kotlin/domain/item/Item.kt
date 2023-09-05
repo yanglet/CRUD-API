@@ -12,7 +12,7 @@ class Item(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    var itemNo: Long,
+    var itemNo: Long = 0,
 
     @Column(nullable = false)
     var name: String,
@@ -23,7 +23,7 @@ class Item(
     @Column(nullable = false)
     var deleted: Boolean = false,
 
-    var deletedDate: LocalDateTime?
+    var deletedDate: LocalDateTime? = null
 
 ) : BaseEntity() {
 }
