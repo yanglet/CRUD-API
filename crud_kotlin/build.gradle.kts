@@ -7,6 +7,8 @@ plugins {
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
+	kotlin("kapt") version "1.8.22"
+	idea
 }
 
 group = "com.example"
@@ -25,6 +27,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
+	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt ("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	kapt ("jakarta.annotation:jakarta.annotation-api")
+	kapt ("jakarta.persistence:jakarta.persistence-api")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
@@ -42,4 +49,12 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+idea {
+	module {
+		val kaptMain = file("build/generated/source/kapt/main")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
+	}
 }
