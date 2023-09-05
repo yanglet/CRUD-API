@@ -92,6 +92,9 @@ public class ItemServiceImpl implements ItemService {
         item.delete();
     }
 
+    /**
+     * Controller 단에서 validation 해도 될듯
+     */
     private void validateItemQuantity(Long quantity) {
         if (quantity < 1) {
             throw new ItemQuantityException("상품 재고는 1개 이상이어야합니다.");
