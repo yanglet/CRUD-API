@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
@@ -21,7 +24,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional(readOnly = true)
     @Override
-    public PageDto readItems(Pageable pageable, ItemReadRequest request) {
+    public PageDto<List<ItemReadResponse>> readItems(Pageable pageable, ItemReadRequest request) {
         Page<Item> items = itemRepository.findAllCustom(
                 pageable,
                 request.getKeyword(),
@@ -29,7 +32,20 @@ public class ItemServiceImpl implements ItemService {
                 request.getEndDate()
         );
 
-        return new PageDto(items.getContent(), items.getTotalElements());
+        return new PageDto<>(
+                items.getContent().stream().map(item ->
+                        ItemReadResponse.of(
+                                item.getItemNo(),
+                                item.getName(),
+                                item.getQuantity(),
+                                item.getInsertDate(),
+                                item.getInsertOperator(),
+                                item.getUpdateDate(),
+                                item.getUpdateOperator()
+                        )
+                ).collect(Collectors.toList()),
+                items.getTotalElements()
+        );
     }
 
     @Transactional
