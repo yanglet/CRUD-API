@@ -1,11 +1,14 @@
 package com.example.crud_kotlin.application.item
 
+import com.example.crud_kotlin.application.common.dto.PageDto
 import com.example.crud_kotlin.application.item.dto.ItemCreateRequest
+import com.example.crud_kotlin.application.item.dto.ItemReadRequest
 import com.example.crud_kotlin.application.item.dto.ItemReadResponse
 import com.example.crud_kotlin.application.item.exception.ItemNotFoundException
 import com.example.crud_kotlin.application.item.exception.ItemQuantityException
 import com.example.crud_kotlin.domain.item.Item
 import com.example.crud_kotlin.domain.item.ItemRepository
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -13,6 +16,21 @@ import org.springframework.transaction.annotation.Transactional
 class ItemServiceImpl(
     private val itemRepository: ItemRepository
 ) : ItemService {
+    @Transactional(readOnly = true)
+    override fun readItems(pageable: Pageable, request: ItemReadRequest): PageDto<Iterable<ItemReadResponse>> {
+        val items = itemRepository.findAllCustom(
+            pageable = pageable,
+            keyword = request.keyword,
+            startDate = request.startDate,
+            endDate = request.endDate
+        )
+
+        return PageDto(
+            content = items.content.map { it.toReadResponse() },
+            count = items.totalElements
+        )
+    }
+
     @Transactional
     override fun createItem(request: ItemCreateRequest): Long {
         validateItemQuantity(request.quantity)
