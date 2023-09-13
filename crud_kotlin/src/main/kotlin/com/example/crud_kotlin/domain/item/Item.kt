@@ -26,4 +26,16 @@ class Item(
     var deletedDate: LocalDateTime? = null
 
 ) : BaseEntity() {
+
+    fun update(name: String, quantity: Long) {
+        this.name = name
+        this.quantity = quantity
+    }
+
+    fun updateQuantity(type: String, quantity: Long) {
+        when (type) {
+            "ADD" -> this.quantity = this.quantity + quantity
+            "MINUS" -> this.quantity = this.quantity - quantity
+        }
+    }
 }

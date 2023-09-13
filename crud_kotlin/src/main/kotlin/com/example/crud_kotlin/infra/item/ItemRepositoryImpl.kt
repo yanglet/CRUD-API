@@ -46,6 +46,8 @@ class ItemRepositoryImpl(
 
     override fun save(item: Item): Long = itemJpaRepository.save(item).itemNo
 
+    override fun saveAndFlush(item: Item) = itemJpaRepository.saveAndFlush(item)
+
     override fun findByIdOrNull(itemNo: Long): Item? = itemJpaRepository.findByIdOrNull(itemNo)
 
     private fun containsKeyword(keyword: String?): BooleanExpression? =

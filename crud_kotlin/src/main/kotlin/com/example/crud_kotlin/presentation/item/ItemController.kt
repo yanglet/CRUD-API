@@ -2,9 +2,7 @@ package com.example.crud_kotlin.presentation.item
 
 import com.example.crud_kotlin.application.common.dto.PageDto
 import com.example.crud_kotlin.application.item.ItemService
-import com.example.crud_kotlin.application.item.dto.ItemCreateRequest
-import com.example.crud_kotlin.application.item.dto.ItemReadRequest
-import com.example.crud_kotlin.application.item.dto.ItemReadResponse
+import com.example.crud_kotlin.application.item.dto.*
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
@@ -37,4 +35,22 @@ class ItemController(
         ResponseEntity.ok(
             itemService.readItem(itemNo)
         )
+
+    @PutMapping("/{itemNo}")
+    fun updateItem(
+        @PathVariable itemNo: Long,
+        @RequestBody request: ItemUpdateRequest
+    ): ResponseEntity<Unit> {
+        itemService.updateItem(itemNo, request)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PatchMapping("/{itemNo}")
+    fun updateItemQuantity(
+        @PathVariable itemNo: Long,
+        @RequestBody request: ItemUpdateQuantityRequest
+    ): ResponseEntity<Unit> {
+        itemService.updateItemQuantity(itemNo, request)
+        return ResponseEntity.noContent().build()
+    }
 }

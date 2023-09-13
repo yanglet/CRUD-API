@@ -12,5 +12,6 @@ interface ItemRepository {
         endDate: LocalDateTime?
     ): Page<Item>
     fun save(item: Item): Long
+    fun saveAndFlush(item: Item): Item
     fun findByIdOrNull(itemNo: Long): Item?
 }

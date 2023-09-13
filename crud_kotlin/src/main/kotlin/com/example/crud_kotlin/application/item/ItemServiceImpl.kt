@@ -1,9 +1,8 @@
 package com.example.crud_kotlin.application.item
 
+import com.example.crud_kotlin.application.common.DistributedLockService
 import com.example.crud_kotlin.application.common.dto.PageDto
-import com.example.crud_kotlin.application.item.dto.ItemCreateRequest
-import com.example.crud_kotlin.application.item.dto.ItemReadRequest
-import com.example.crud_kotlin.application.item.dto.ItemReadResponse
+import com.example.crud_kotlin.application.item.dto.*
 import com.example.crud_kotlin.application.item.exception.ItemNotFoundException
 import com.example.crud_kotlin.application.item.exception.ItemQuantityException
 import com.example.crud_kotlin.domain.item.Item
@@ -14,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class ItemServiceImpl(
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
+    private val distributedLockService: DistributedLockService
 ) : ItemService {
     @Transactional(readOnly = true)
     override fun readItems(pageable: Pageable, request: ItemReadRequest): PageDto<Iterable<ItemReadResponse>> {
@@ -45,6 +45,24 @@ class ItemServiceImpl(
     override fun readItem(itemNo: Long): ItemReadResponse {
         val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException("상품을 찾을 수 없습니다.")
         return item.toReadResponse()
+    }
+
+    @Transactional
+    override fun updateItem(itemNo: Long, request: ItemUpdateRequest) {
+        validateItemQuantity(request.quantity)
+
+        val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException("상품을 찾을 수 없습니다.")
+        item.update(request.name, request.quantity)
+    }
+
+    override fun updateItemQuantity(itemNo: Long, request: ItemUpdateQuantityRequest) {
+        validateItemQuantity(request.quantity)
+
+        distributedLockService.doDistributedLock("LOCK:updateItemQuantity:$itemNo") {
+            val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException("상품을 찾을 수 없습니다.")
+            item.updateQuantity(request.type, request.quantity)
+            itemRepository.saveAndFlush(item)
+        }
     }
 
     private fun validateItemQuantity(quantity: Long) {
