@@ -19,7 +19,7 @@ class DistributedLockService(
             val available = lock.tryLock(5, 3, TimeUnit.SECONDS)
 
             if (available) {
-                function.invoke()
+                function() // function.invoke()
             }
         } catch (e: InterruptedException) {
             log.error("InterruptedException 발생!", e)
