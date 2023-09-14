@@ -1,13 +1,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+	val kotlinVersion = "1.8.22"
+
 	id("org.springframework.boot") version "3.1.3"
 	id("io.spring.dependency-management") version "1.1.3"
+	id("io.kotest") version "0.4.10"
 
-	kotlin("jvm") version "1.8.22"
-	kotlin("plugin.spring") version "1.8.22"
-	kotlin("plugin.jpa") version "1.8.22"
-	kotlin("kapt") version "1.8.22"
+	kotlin("jvm") version kotlinVersion
+	kotlin("plugin.spring") version kotlinVersion
+	kotlin("plugin.jpa") version kotlinVersion
+	kotlin("kapt") version kotlinVersion
 	idea
 }
 
@@ -23,14 +26,17 @@ repositories {
 }
 
 dependencies {
+	val kotestVersion = "5.5.5"
+	val querydslVersion = "5.0.0"
+
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
 	implementation("org.redisson:redisson-spring-boot-starter:3.23.1")
 
-	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-	kapt ("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	implementation ("com.querydsl:querydsl-jpa:${querydslVersion}:jakarta")
+	kapt ("com.querydsl:querydsl-apt:${querydslVersion}:jakarta")
 	kapt ("jakarta.annotation:jakarta.annotation-api")
 	kapt ("jakarta.persistence:jakarta.persistence-api")
 
@@ -40,6 +46,12 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	testImplementation("io.kotest:kotest-runner-junit5-jvm:${kotestVersion}")
+	testImplementation("io.kotest:kotest-assertions-core-jvm:${kotestVersion}")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
+
+	testImplementation("io.mockk:mockk:1.13.4")
 }
 
 tasks.withType<KotlinCompile> {
