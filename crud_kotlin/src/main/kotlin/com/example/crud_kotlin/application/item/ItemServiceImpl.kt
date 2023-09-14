@@ -65,6 +65,12 @@ class ItemServiceImpl(
         }
     }
 
+    @Transactional
+    override fun deleteItem(itemNo: Long) {
+        val item = itemRepository.findByIdOrNull(itemNo) ?: throw ItemNotFoundException("상품을 찾을 수 없습니다.")
+        item.delete()
+    }
+
     private fun validateItemQuantity(quantity: Long) {
         if (quantity < 1) {
             throw ItemQuantityException("상품 재고는 1개 이상이어야합니다.")

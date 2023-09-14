@@ -10,4 +10,5 @@ interface ItemService {
     fun readItem(itemNo: Long): ItemReadResponse
     fun updateItem(itemNo: Long, request: ItemUpdateRequest)
     fun updateItemQuantity(itemNo: Long, request: ItemUpdateQuantityRequest)
+    fun deleteItem(itemNo: Long)
 }

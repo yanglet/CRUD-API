@@ -38,4 +38,9 @@ class Item(
             "MINUS" -> this.quantity = this.quantity - quantity
         }
     }
+
+    fun delete() {
+        this.deleted = true
+        this.deletedDate = LocalDateTime.now()
+    }
 }

@@ -53,4 +53,10 @@ class ItemController(
         itemService.updateItemQuantity(itemNo, request)
         return ResponseEntity.noContent().build()
     }
+
+    @DeleteMapping("/{itemNo}")
+    fun deleteItem(@PathVariable itemNo: Long): ResponseEntity<Unit> {
+        itemService.deleteItem(itemNo)
+        return ResponseEntity.noContent().build()
+    }
 }
