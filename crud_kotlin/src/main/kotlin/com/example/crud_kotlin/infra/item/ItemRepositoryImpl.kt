@@ -50,6 +50,8 @@ class ItemRepositoryImpl(
 
     override fun findByIdOrNull(itemNo: Long): Item? = itemJpaRepository.findByIdOrNull(itemNo)
 
+    override fun deleteAll() = itemJpaRepository.deleteAll()
+
     private fun containsKeyword(keyword: String?): BooleanExpression? =
         keyword?.let { item.name.contains(keyword) }
 

@@ -14,4 +14,5 @@ interface ItemRepository {
     fun save(item: Item): Long
     fun saveAndFlush(item: Item): Item
     fun findByIdOrNull(itemNo: Long): Item?
+    fun deleteAll()
 }
