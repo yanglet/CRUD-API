@@ -13,6 +13,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ExceptionResponse> handleBusinessException(BusinessException e) {
         log.error("BusinessException", e);

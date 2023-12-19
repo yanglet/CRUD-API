@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RedissonConfig {
+
     @Value("${redis.host}")
     private String host;
     @Value("${redis.port}")

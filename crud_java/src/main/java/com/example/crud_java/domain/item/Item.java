@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Item extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -48,9 +49,9 @@ public class Item extends BaseEntity {
     }
 
     public void updateQuantity(String type, Long quantity) {
-        if (type == "ADD") {
+        if ("ADD".equals(type)) {
             this.quantity = this.quantity + quantity;
-        } else if (type == "MINUS") {
+        } else if ("MINUS".equals(type)) {
             this.quantity = this.quantity - quantity;
         }
     }

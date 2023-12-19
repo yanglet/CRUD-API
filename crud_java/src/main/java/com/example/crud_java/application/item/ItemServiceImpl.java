@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
+
     private final ItemRepository itemRepository;
     private final DistributedLockService distributedLockService;
 
@@ -33,17 +34,9 @@ public class ItemServiceImpl implements ItemService {
         );
 
         return new PageDto<>(
-                items.getContent().stream().map(item ->
-                        ItemReadResponse.of(
-                                item.getItemNo(),
-                                item.getName(),
-                                item.getQuantity(),
-                                item.getInsertDate(),
-                                item.getInsertOperator(),
-                                item.getUpdateDate(),
-                                item.getUpdateOperator()
-                        )
-                ).collect(Collectors.toList()),
+                items.getContent().stream()
+                        .map(ItemReadResponse::from)
+                        .collect(Collectors.toList()),
                 items.getTotalElements()
         );
     }
@@ -65,15 +58,7 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findById(itemNo)
                 .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
 
-        return ItemReadResponse.of(
-                item.getItemNo(),
-                item.getName(),
-                item.getQuantity(),
-                item.getInsertDate(),
-                item.getInsertOperator(),
-                item.getUpdateDate(),
-                item.getUpdateOperator()
-        );
+        return ItemReadResponse.from(item);
     }
 
     @Transactional
@@ -83,7 +68,6 @@ public class ItemServiceImpl implements ItemService {
 
         Item item = itemRepository.findById(itemNo)
                 .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
-
         item.update(request.getName(), request.getQuantity());
     }
 
@@ -92,9 +76,7 @@ public class ItemServiceImpl implements ItemService {
         distributedLockService.doDistributedLock(() -> {
             Item item = itemRepository.findById(itemNo)
                     .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
-
             item.updateQuantity(request.getType(), request.getQuantity());
-
             itemRepository.saveAndFlush(item);
         }, "LOCK:updateItemQuantity:" + itemNo.toString());
     }
@@ -104,7 +86,6 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItem(Long itemNo) {
         Item item = itemRepository.findById(itemNo)
                 .orElseThrow(() -> new ItemNotFoundException("상품을 찾을 수 없습니다."));
-
         item.delete();
     }
 

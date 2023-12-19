@@ -1,5 +1,6 @@
 package com.example.crud_java.application.item.dto;
 
+import com.example.crud_java.domain.item.Item;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemReadResponse {
+
     private Long itemNo;
     private String name;
     private Long quantity;
@@ -19,15 +21,15 @@ public class ItemReadResponse {
     private LocalDateTime updateDate;
     private String updateOperator;
 
-    public static ItemReadResponse of(Long itemNo, String name, Long quantity, LocalDateTime insertDate, String insertOperator, LocalDateTime updateDate, String updateOperator) {
+    public static ItemReadResponse from(Item item) {
         ItemReadResponse itemReadResponse = new ItemReadResponse();
-        itemReadResponse.itemNo = itemNo;
-        itemReadResponse.name = name;
-        itemReadResponse.quantity = quantity;
-        itemReadResponse.insertDate = insertDate;
-        itemReadResponse.insertOperator = insertOperator;
-        itemReadResponse.updateDate = updateDate;
-        itemReadResponse.updateOperator = updateOperator;
+        itemReadResponse.itemNo = item.getItemNo();
+        itemReadResponse.name = item.getName();
+        itemReadResponse.quantity = item.getQuantity();
+        itemReadResponse.insertDate = item.getInsertDate();
+        itemReadResponse.insertOperator = item.getInsertOperator();
+        itemReadResponse.updateDate = item.getUpdateDate();
+        itemReadResponse.updateOperator = item.getUpdateOperator();
         return itemReadResponse;
     }
 }

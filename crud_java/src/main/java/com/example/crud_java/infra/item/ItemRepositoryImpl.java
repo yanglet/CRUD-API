@@ -19,6 +19,7 @@ import static com.example.crud_java.domain.item.QItem.item;
 @Repository
 @RequiredArgsConstructor
 public class ItemRepositoryImpl implements ItemRepository {
+
     private final ItemJpaRepository itemJpaRepository;
     private final JPAQueryFactory queryFactory;
 

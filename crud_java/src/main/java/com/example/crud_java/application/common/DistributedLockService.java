@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class DistributedLockService {
+
     private final RedissonClient redissonClient;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -22,7 +23,6 @@ public class DistributedLockService {
 
         try {
             boolean available = lock.tryLock(5, 3, TimeUnit.SECONDS);
-
             if (available) {
                 strategy.doLock();
             }

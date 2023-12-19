@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemReadRequest {
+
     private String keyword;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
