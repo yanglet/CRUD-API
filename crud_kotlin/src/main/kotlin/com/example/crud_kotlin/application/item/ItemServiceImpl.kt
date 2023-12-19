@@ -16,6 +16,7 @@ class ItemServiceImpl(
     private val itemRepository: ItemRepository,
     private val distributedLockService: DistributedLockService
 ) : ItemService {
+
     @Transactional(readOnly = true)
     override fun readItems(pageable: Pageable, request: ItemReadRequest): PageDto<Iterable<ItemReadResponse>> {
         val items = itemRepository.findAllCustom(

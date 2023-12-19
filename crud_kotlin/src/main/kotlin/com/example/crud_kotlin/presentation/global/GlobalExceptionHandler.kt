@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler : Log {
+
     @ExceptionHandler(BusinessException::class)
     protected fun handleBusinessException(e: BusinessException): ResponseEntity<ExceptionResponse> {
         log.error("BusinessException", e)

@@ -6,5 +6,6 @@ import java.util.*
 
 @Component
 class CustomAuditorAware : AuditorAware<String> {
+
     override fun getCurrentAuditor(): Optional<String> = Optional.of("crud-api")
 }

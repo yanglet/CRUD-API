@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 class DistributedLockService(
     private val redissonClient: RedissonClient
 ) : Log {
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun <T> doDistributedLock(lockName: String, function: () -> T) {
         val lock = redissonClient.getLock(lockName)

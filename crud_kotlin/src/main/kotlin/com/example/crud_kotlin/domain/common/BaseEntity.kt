@@ -13,6 +13,7 @@ import java.time.LocalDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
+
     @CreatedDate
     @Column(updatable = false)
     lateinit var insertDate: LocalDateTime

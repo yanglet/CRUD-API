@@ -17,6 +17,7 @@ class ItemRepositoryImpl(
     private val itemJpaRepository: ItemJpaRepository,
     private val queryFactory: JPAQueryFactory
 ) : ItemRepository {
+
     override fun findAllCustom(
         pageable: Pageable,
         keyword: String?,

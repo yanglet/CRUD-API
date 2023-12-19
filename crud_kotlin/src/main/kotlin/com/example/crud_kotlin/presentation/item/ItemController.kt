@@ -14,6 +14,7 @@ import java.net.URI
 class ItemController(
     private val itemService: ItemService
 ) {
+
     @GetMapping
     fun readItems(
         @PageableDefault(size = 20) pageable: Pageable,
